@@ -14,10 +14,21 @@ We used a collection of primitive cubes, scaled and translated to construct this
 ## First Table rendering using CSG
 The table is constructed by joining boxes to form the main wooden body, as well as the felt.
 We then subtracted cylinders to carve out the 6 pockets of the table through the wood and felt.
-![First Table with CSG](./first_table_with_csg.png)
+![First Table with CSG](./first_table_with_csg.png)\
+This finite-cylinder intersection implementation combines a ray's interval inside an infinite cylinder with
+its interval between the caps which are planes. To assist with this implementation, we used the
+geometric explanation in Zorin's ray intersection notes: [Link to notes](https://mrl.cs.nyu.edu/~dzorin/ug-graphics/lectures/lecture20/lecture20-6pp.pdf)
+The resulting entry and exit boundaries were then processed by the recursive CSG filtering alogrithm
+that was covered in our classes bonus lecture.
 
 ## Felt Texture Mapping
 After constructing the base table with primitve shapes and CSG the next step was texture mapping
-the felt to make it look more like a real table. We took a texture image off of the internet and mapped
-its pixels onto the pixels of the felt.\
+the felt to make it look more like a real table. To accompish this we used an image-based texture
+When a ray intersects the defined felt object its x and z coordinates are converted into texture coordinates
+These coordinates are what determine which pixel to sample from our image texture. The sampled value determines
+the surfaces diffuse color which is then used in the lighting calclations for shading and shadows.\
+To integrate this into the current project, we added a texture attribute to the Material class which
+could optionally store a function which grabs the texture sample for a given point. The lighting functions we
+have then call this function with the intersection point to obtain its correct color. Materials without a texture
+simply continue to use their constant diffuse color.[Link to Texture](https://ambientcg.com/view?id=Fabric034)\
 ![Felt with texture](./felt_texture_map.png)
